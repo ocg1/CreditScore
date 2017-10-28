@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list: this.props.list.map((ci) => ( {ci: ci, active: true} ))
+      list: this.props.list.map((ci) => ({ ci: ci, active: true }))
     }
   }
 
@@ -17,17 +17,17 @@ class App extends Component {
 
   updateScore = () => {
     var score = this.state.list
-              .filter((i) => i.active)
-              .map((i) => 1)
-              .reduce((p, c) => p + c, 0)
+      .filter((i) => i.active)
+      .map((i) => 1)
+      .reduce((p, c) => p + c, 0)
     this.setState({ score })
   }
 
 
-  setActive = (creditInfo, i, active) => {    
+  setActive = (creditInfo, i, active) => {
     var list = [...this.state.list]
-    list[i].active = active;
-    this.setState({list})
+    list[i].active = active
+    this.setState({ list })
     this.updateScore()
   }
 
