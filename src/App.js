@@ -14,13 +14,95 @@ class App extends Component {
     this.updateScore()
   }
 
+  calculateKindContribution = ({kind, data}) => {
+    switch(kind){
+      case "PAYSLIP":
+        return data.pay
+      case "ACCOUNT":
+        return 0
+      default:
+        console.log("unknown data kind " + kind)
+        return 0
+    }
+  }
+
+  tryGetActiveData = (kind) => {
+    var d = this.state.list.find((c) => c.ci.kind === kind && c.active)
+    return d ? d.ci : undefined
+  }
+
+  tryGetAge = () => {
+    var birthCert = this.tryGetActiveData("BIRTH_CERTIFICATE")
+    if( birthCert ){
+      var birth_date = birthCert.data.birth_date 
+      return 2017 - birth_date.getUTCFullYear()
+    }
+  }
+
+  pensionScore = () => {
+    var age = this.tryGetAge()
+    const SAVING_START_AGE = 25
+    const RETIREMENT_AGE = 67
+    const RETIREMENT_SAVINGS_GOAL = 2000000
+    var pension = this.tryGetActiveData("PENSION")
+    if(age && pension && age > SAVING_START_AGE) {
+      var savingYears = age - SAVING_START_AGE
+      var target = savingYears * (RETIREMENT_SAVINGS_GOAL/ (RETIREMENT_AGE - SAVING_START_AGE))
+
+      var diff = pension.data.total - target
+      return diff
+    }
+    return 0
+  }
+
+  monthlySavings = () => {
+    var accountMonthlySavings = this.tryGetActiveData("ACCOUNT")
+    return accountMonthlySavings ? accountMonthlySavings.data.monthlySavings : 0
+  }
+
+  payPreTax = () => {
+    var pay = this.tryGetActiveData("PAYSLIP")
+    return pay ? pay.data.pay : 0
+  }
+
+  assets = () => {
+    var assets = this.tryGetActiveData("ASSETS")
+    return assets ? assets.data.total : 0
+  }
+
+  debt = () => {
+    var assets = this.tryGetActiveData("DEBT")
+    return assets ? assets.data.total : 0
+  }
+
+  daysSinceLastMissed = () => {
+    var days = this.tryGetActiveData("DAYS_SINCE_LAST_MISSED")
+    return days ? days.data.daysSinceLastMissed : 100
+  }
 
   updateScore = () => {
-    var score = this.state.list
-      .filter((i) => i.active)
-      .map((i) => 1)
-      .reduce((p, c) => p + c, 0)
-    this.setState({ score })
+    const DEBT_FACTOR = -1
+    const DAYS_SINCE_LAST_MISSED_CUTOFF = 90
+    const DAYS_SINCE_LAST_MISSED_PENALTY = -100000
+
+    var list = this.state.list
+    var age = this.tryGetAge()
+    // var score = this.state.list
+    //   .filter((i) => i.active)
+    //   .map((k) => this.calculateKindContribution(k.ci))
+    //   .reduce((p, c) => p + c, 0)
+    var score = 0
+    score += this.pensionScore()
+    score += this.monthlySavings()
+    score += this.payPreTax()
+    score += DEBT_FACTOR * this.debt()
+    score += this.assets()
+    console.log("this.daysSinceLastMissed()", this.daysSinceLastMissed())
+    score += this.daysSinceLastMissed() < DAYS_SINCE_LAST_MISSED_CUTOFF ? DAYS_SINCE_LAST_MISSED_PENALTY : 0
+    
+    score = Math.round(score)
+
+    this.setState({ score, age })
   }
 
 
@@ -36,7 +118,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">TrustMe</h1>
-          <h2>{this.props.data.name}</h2>
+          <h2>{this.props.data.name}{this.state.age?`(${this.state.age})`:""}</h2>
           <h2>{this.state.score}</h2>
         </header>
         <div>
