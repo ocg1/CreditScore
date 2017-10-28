@@ -6,7 +6,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      list: this.props.list.map((ci) => ({ ci: ci, active: true }))
+      list: this.props.data.creditInfos.map((ci) => ({ ci: ci, active: true }))
     }
   }
 
@@ -36,6 +36,7 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">TrustMe</h1>
+          <h2>{this.props.data.name}</h2>
           <h2>{this.state.score}</h2>
         </header>
         <div>

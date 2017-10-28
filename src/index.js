@@ -6,12 +6,18 @@ import registerServiceWorker from './registerServiceWorker';
 
 
 var c = () => {
-    var initialData =
-        [
-            { name: "Payslips", fromDate: "" },
-            { name: "Payroll account", fromDate: "" }
-        ]
-    ReactDOM.render(<App list={initialData} />, document.getElementById('root'));
+    var amanda =
+        {
+            name: "Amanda",
+            creditInfos :
+            [
+                { name: "Payslips", fromDate: "" },
+                { name: "Payroll account", fromDate: "" }
+            ]
+    }
+
+    var initialData = amanda
+    ReactDOM.render(<App data={initialData} />, document.getElementById('root'));
 }
 c();
 registerServiceWorker();

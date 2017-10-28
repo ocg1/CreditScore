@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './CreditInfo.css';
 
 class CreditInfo extends Component {
     toggleCheckboxChange = () => {
@@ -6,7 +7,7 @@ class CreditInfo extends Component {
     }
 
     render() {
-        return <div>
+        return <div class="CreditInfoRow">
             <p>{this.props.creditInfo.name}</p>
             <input
                 type="checkbox"
