@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import CreditInfo from "./CreditInfo";
 import './App.css';
+import { PageHeader, ListGroup, Panel, Table, Nav, NavItem, Navbar } from 'react-bootstrap';
 
 class App extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ class App extends Component {
     this.updateScore()
   }
 
-  calculateKindContribution = ({kind, data}) => {
-    switch(kind){
+  calculateKindContribution = ({ kind, data }) => {
+    switch (kind) {
       case "PAYSLIP":
         return data.pay
       case "ACCOUNT":
@@ -33,8 +34,8 @@ class App extends Component {
 
   tryGetAge = () => {
     var birthCert = this.tryGetActiveData("BIRTH_CERTIFICATE")
-    if( birthCert ){
-      var birth_date = birthCert.data.birth_date 
+    if (birthCert) {
+      var birth_date = birthCert.data.birth_date
       return 2017 - birth_date.getUTCFullYear()
     }
   }
@@ -45,9 +46,9 @@ class App extends Component {
     const RETIREMENT_AGE = 67
     const RETIREMENT_SAVINGS_GOAL = 2000000
     var pension = this.tryGetActiveData("PENSION")
-    if(age && pension && age > SAVING_START_AGE) {
+    if (age && pension && age > SAVING_START_AGE) {
       var savingYears = age - SAVING_START_AGE
-      var target = savingYears * (RETIREMENT_SAVINGS_GOAL/ (RETIREMENT_AGE - SAVING_START_AGE))
+      var target = savingYears * (RETIREMENT_SAVINGS_GOAL / (RETIREMENT_AGE - SAVING_START_AGE))
 
       var diff = pension.data.total - target
       return diff
@@ -99,12 +100,11 @@ class App extends Component {
     score += this.assets()
     console.log("this.daysSinceLastMissed()", this.daysSinceLastMissed())
     score += this.daysSinceLastMissed() < DAYS_SINCE_LAST_MISSED_CUTOFF ? DAYS_SINCE_LAST_MISSED_PENALTY : 0
-    
+
     score = Math.round(score)
-
-    this.setState({ score, age })
+    var completeness = list.filter((i) => i.active).length / list.length;
+    this.setState({ score, age, completeness })
   }
-
 
   setActive = (creditInfo, i, active) => {
     var list = [...this.state.list]
@@ -116,21 +116,37 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <h1 className="App-title">TrustMe</h1>
-          <h2>{this.props.data.name}{this.state.age?`(${this.state.age})`:""}</h2>
-          <h2>{this.state.score}</h2>
-        </header>
-        <div>
-          {
-            this.state.list.map(({ ci, active }, i) =>
-              <CreditInfo key={i}
-                creditInfo={ci}
-                handleActivityChange={(ci, active) => this.setActive(ci, i, active)}
-                active={active}
-              />)
-          }
-        </div>
+        <Navbar>
+          <Navbar.Header>
+            <Navbar.Brand>
+              TrustMe
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Nav>
+            <NavItem>Add data source</NavItem>
+          </Nav>
+          <Nav pullRight>
+            <Navbar.Text>Score {this.state.score}</Navbar.Text>
+            <Navbar.Text>Completeness {Math.round(this.state.completeness * 100)}%<meter value={this.state.completeness} min="0" max="1">{Math.round(this.state.completeness * 100)}</meter></Navbar.Text>
+            <Navbar.Text>{this.props.data.name}{this.state.age ? `(${this.state.age})` : ""}</Navbar.Text>
+          </Nav>
+        </Navbar>
+        <Table striped bordered condensed hover>
+          <thead><tr><th>Data</th>
+            <th>Value</th>
+            <th>Revealed</th></tr></thead>
+          <tbody>
+            {
+              this.state.list.map(({ ci, active }, i) =>
+                <CreditInfo key={i}
+                  creditInfo={ci}
+                  handleActivityChange={(ci, active) => this.setActive(ci, i, active)}
+                  active={active}
+                />)
+            }
+          </tbody>
+        </Table>
       </div>
     );
   }

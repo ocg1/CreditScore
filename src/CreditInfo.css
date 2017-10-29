@@ -8,3 +8,6 @@
 input {
     justify-content: flex-end
 }
+.dataColumn {
+    text-align: right;
+}

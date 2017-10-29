@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './CreditInfo.css';
+import { ToggleButton, ListGroupItem } from 'react-bootstrap';
+
 
 class CreditInfo extends Component {
     toggleCheckboxChange = () => {
@@ -20,16 +22,18 @@ class CreditInfo extends Component {
     }
 
     render() {
-        return <div className="CreditInfoRow">
-            <p>{this.props.creditInfo.name}</p>
-            <p>{this.getDataString(this.props.creditInfo.data)}</p>
-            <input
-                type="checkbox"
-                value="active"
-                checked={this.props.active}
-                onChange={this.toggleCheckboxChange}
-            />
-        </div>
+        return <tr>
+            <td>{this.props.creditInfo.name}</td>
+            <td class="dataColumn">{this.getDataString(this.props.creditInfo.data)}</td>
+            <td>
+                <input
+                    type="checkbox"
+                    value="active"
+                    checked={this.props.active}
+                    onChange={this.toggleCheckboxChange}
+                />
+            </td>
+        </tr>
     }
 }
 

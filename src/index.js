@@ -11,7 +11,7 @@ var c = () => {
             name: "Amanda Jensen",
             creditInfos:
             [
-                { name: "Birth certificate", kind: "BIRTH_CERTIFICATE", data: { birth_date: new Date(1990, 4, 16) }},
+                { name: "Birth year", kind: "BIRTH_CERTIFICATE", data: { birth_date: new Date(1990, 4, 16) }},
                 { name: "Payroll account", kind: "ACCOUNT", data: { monthlySavings: 1000 } },
                 { name: "Payslips", kind: "PAYSLIP", data: { pay: 33523 } },
                 { name: "Debt report", kind: "DEBT", data: { total: 1000000 } },
