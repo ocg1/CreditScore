@@ -21,9 +21,8 @@ class CreditInfo extends Component {
         if (data.total) return formatAmount(data.total)
         if (data.pay) return formatAmount(data.pay)
         if (data.monthlySavings) return formatAmount(data.monthlySavings)
-        if (data.birth_date) return "year:" + data.birth_date.getUTCFullYear()
+        if (data.birth_date) return data.birth_date.getUTCFullYear()
         if (data.daysSinceLastMissed) {
-
             if (data.daysSinceLastMissed == Infinity)
                 return "never missed a payment"
             return data.daysSinceLastMissed + " days since last missed payment"
@@ -73,14 +72,7 @@ class CreditInfo extends Component {
                         <Button onClick={this.close}>Close</Button>
                     </Modal.Footer>
                 </Modal>
-
-                {/* 
-                {this.props.creditInfo.data.url?
-                <a onClick={() => this.setState({showModal: true})}>{this.getDataString(this.props.creditInfo.data)}</a>:
-                this.getDataString(this.props.creditInfo.data)} */}
-
-                {this.getDataString(this.props.creditInfo.data)}
-                {this.props.creditInfo.data.url ? <Button onClick={() => this.showUrlInModal(this.props.creditInfo.data.url)}>...</Button> : <div />}
+                {this.props.creditInfo.data.url ? <a onClick={() => this.showUrlInModal(this.props.creditInfo.data.url)}>{this.getDataString(this.props.creditInfo.data)}</a> : this.getDataString(this.props.creditInfo.data)}
             </td>
             <td>
                 <input

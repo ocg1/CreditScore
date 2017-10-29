@@ -133,7 +133,7 @@ class App extends Component {
           </Nav>
         </Navbar>
         <Table striped bordered condensed hover>
-          <thead><tr><th>Data</th>
+          <thead><tr><th>Credit Data</th>
             <th>Value</th>
             <th>Revealed</th></tr></thead>
           <tbody>
