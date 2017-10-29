@@ -119,6 +119,9 @@ class App extends Component {
         <Navbar>
           <Navbar.Header>
             <Navbar.Brand>
+              <span>
+                <img src="TrustMe_small.png" height={30} />
+              </span>
               TrustMe
             </Navbar.Brand>
             <Navbar.Toggle />
