@@ -62,8 +62,8 @@ class CreditInfo extends Component {
                             <thead><tr><th>Amount</th><th>Category</th><th>Date</th></tr></thead>
                             <tbody>
                                 {
-                                    this.state.accountData.map((transaction) =>
-                                        <tr><td className="dataColumn">{transaction.amount}</td><td>{transaction.category}</td><td>{transaction.date}</td></tr>
+                                    this.state.accountData.map((transaction,i) =>
+                                        <tr key={i}><td className="dataColumn">{transaction.amount}</td><td>{transaction.category}</td><td>{transaction.date}</td></tr>
                                     )}
                             </tbody>
                         </Table>
