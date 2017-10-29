@@ -88,10 +88,6 @@ class App extends Component {
 
     var list = this.state.list
     var age = this.tryGetAge()
-    // var score = this.state.list
-    //   .filter((i) => i.active)
-    //   .map((k) => this.calculateKindContribution(k.ci))
-    //   .reduce((p, c) => p + c, 0)
     var score = 0
     score += this.pensionScore()
     score += this.monthlySavings()
@@ -102,7 +98,12 @@ class App extends Component {
     score += this.daysSinceLastMissed() < DAYS_SINCE_LAST_MISSED_CUTOFF ? DAYS_SINCE_LAST_MISSED_PENALTY : 0
 
     score = Math.round(score)
-    var completeness = list.filter((i) => i.active).length / list.length;
+    var completenessWeigths = list.map(i => i.ci.kind == "DEBT" ? 5 : 1)
+    var activeWeights = completenessWeigths.map((c, i) => list[i].active?c:0)
+    function sum(a) {
+      return a.reduce((x,y) => x + y, 0)
+    }
+    var completeness = sum(activeWeights) / sum(completenessWeigths)
     this.setState({ score, age, completeness })
   }
 
