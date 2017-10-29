@@ -16,7 +16,7 @@ class CreditInfo extends Component {
     }
 
     getDataString = (data) => {
-        var formatAmount = (amount) => amount.formatMoney(2)+ "DKK"
+        var formatAmount = (amount) => amount.formatMoney(0)+ "DKK"
         
         if (data.total) return formatAmount(data.total)
         if (data.pay) return formatAmount(data.pay)
@@ -35,7 +35,7 @@ class CreditInfo extends Component {
 
     setAccountData = (data) => {
         function mapper(o){
-            return {amount: o.FIELD4, category: o.FIELD5, date: o.FIELD7}
+            return {amount: o.FIELD4 == "0.00"?o.FIELD3:o.FIELD4, category: o.FIELD5, date: o.FIELD7}
         }
         data.then((v) => {
             v.shift()
