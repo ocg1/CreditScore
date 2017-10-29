@@ -127,8 +127,8 @@ class App extends Component {
             <NavItem>Add data source</NavItem>
           </Nav>
           <Nav pullRight>
-            <Navbar.Text>Score {this.state.score}</Navbar.Text>
-            <Navbar.Text>Completeness {Math.round(this.state.completeness * 100)}%<meter value={this.state.completeness} min="0" max="1">{Math.round(this.state.completeness * 100)}</meter></Navbar.Text>
+            <Navbar.Text className="ScoreText">Score {this.state.score}</Navbar.Text>
+            <Navbar.Text>Completeness {Math.round(this.state.completeness * 100)}% <meter value={this.state.completeness} min="0" max="1">{Math.round(this.state.completeness * 100)}</meter></Navbar.Text>
             <Navbar.Text>{this.props.data.name}{this.state.age ? `(${this.state.age})` : ""}</Navbar.Text>
           </Nav>
         </Navbar>
